@@ -1,1143 +1,848 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Real World CE | Launch Portal</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
-<script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real World CE | Watch Library</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+
+  <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
-            medicalBlue: '#1f2f46',
-            skyBrand: '#8ec5ea',
-            paleBrand: '#eaf5fc'
+            brandBlue: '#0f2f57',
+            brandSky: '#80c7ef',
+            ytRed: '#ff0033',
+            ink: '#0f172a'
           },
           boxShadow: {
-            soft: '0 14px 34px rgba(15, 23, 42, 0.08)',
-            glow: '0 18px 40px rgba(59, 130, 246, 0.20)'
+            card: '0 10px 28px rgba(15, 23, 42, 0.08)',
+            soft: '0 18px 55px rgba(15, 23, 42, 0.12)'
           }
         }
       }
     }
   </script>
-<style>
-    html {
-      scroll-behavior: smooth;
-    }
+
+  <style>
+    html { scroll-behavior: smooth; }
     body {
-      font-family:'Inter',sans-serif;
-      background:
-        radial-gradient(900px 500px at 0% 0%, rgba(142,197,234,.20), transparent 60%),
-        radial-gradient(800px 420px at 100% 10%, rgba(59,130,246,.10), transparent 55%),
-        linear-gradient(180deg, #f8fbfe 0%, #f3f7fb 100%);
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      color: #0f172a;
     }
-    .glass {
-      background:rgba(255,255,255,.84);
-      backdrop-filter: blur(14px);
-      border:1px solid rgba(226,232,240,.9);
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
     }
-    .hero-bg {
-      background:
-        linear-gradient(130deg, rgba(31,47,70,.97) 0%, rgba(31,47,70,.92) 42%, rgba(59,130,246,.76) 100%);
+
+    .topbar {
+      height: 64px;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(226,232,240,.95);
     }
-    .module-card, .track-card {
-      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background-color .22s ease;
+
+    .left-rail {
+      width: 236px;
+      top: 64px;
+      height: calc(100vh - 64px);
     }
-    .module-card:hover, .track-card:hover {
+
+    .rail-link {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      padding: .75rem 1rem;
+      border-radius: 14px;
+      font-weight: 750;
+      color: #334155;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .rail-link:hover,
+    .rail-link.active {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .rail-link.active .material-symbols-outlined {
+      color: #ff0033;
+    }
+
+    .category-chip {
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      color: #334155;
+      border-radius: 999px;
+      padding: .58rem 1rem;
+      font-size: .86rem;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+    }
+
+    .category-chip:hover {
+      transform: translateY(-1px);
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .category-chip.active {
+      background: #0f172a;
+      color: #fff;
+      border-color: #0f172a;
+    }
+
+    .video-card {
+      cursor: pointer;
+      transition: transform .18s ease;
+    }
+
+    .video-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.10);
-      border-color: rgba(59,130,246,.35);
-    }
-    .chip.active {
-      background:#2563eb;
-      color:#fff;
-      border-color:#2563eb;
-      box-shadow: 0 10px 25px rgba(37,99,235,.18);
     }
 
-    #splash.hidden-splash {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .mobile-chip-row {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .mobile-chip-row::-webkit-scrollbar {
-      display: none;
-    }
-    @media (max-width: 640px) {
-      body {
-        -webkit-tap-highlight-color: transparent;
-      }
-      .glass {
-        backdrop-filter: blur(12px);
-      }
-      .module-card,
-      .track-card {
-        border-radius: 1.4rem;
-      }
-      .module-card:hover,
-      .track-card:hover {
-        transform: none;
-      }
-    }
-  
-
-    .view-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      padding:.4rem .75rem;
-      border-radius:999px;
-      background:rgba(37,99,235,.08);
-      color:#1d4ed8;
-      font-size:.75rem;
-      font-weight:800;
-      letter-spacing:.04em;
-      text-transform:uppercase;
-    }
-    .view-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:.35rem;
-      margin-left:.35rem;
-      padding:.2rem .55rem;
-      border-radius:999px;
-      background:#eff6ff;
-      color:#1d4ed8;
-      font-size:.68rem;
-      font-weight:800;
-      line-height:1;
-      white-space:nowrap;
+    .video-card:hover .thumbnail-img {
+      transform: scale(1.035);
     }
 
-    .module-preview {
+    .thumb {
       position: relative;
-      margin-top: 1rem;
       overflow: hidden;
-      border-radius: 1.25rem;
-      border: 1px solid rgba(226,232,240,.95);
-      background: linear-gradient(180deg, rgba(248,251,254,1) 0%, rgba(234,245,252,1) 100%);
-      aspect-ratio: 16 / 10;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(128,199,239,.28), transparent 38%),
+        linear-gradient(135deg, #0f2f57 0%, #183d6b 50%, #0f172a 100%);
+      aspect-ratio: 16 / 9;
+      border: 1px solid rgba(226,232,240,.92);
     }
-    .module-preview img {
+
+    .thumbnail-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       transition: transform .35s ease, opacity .25s ease;
-      opacity: .98;
+      opacity: .95;
     }
-    .module-card:hover .module-preview img {
-      transform: scale(1.02);
-    }
-    .module-preview::after {
+
+    .thumb::after {
       content: '';
       position: absolute;
-      inset: auto 0 0 0;
-      height: 46%;
-      background: linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(15,23,42,.18) 45%, rgba(15,23,42,.40) 100%);
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15,23,42,0) 45%, rgba(15,23,42,.52) 100%);
       pointer-events: none;
     }
-    .preview-label {
+
+    .play-pill {
       position: absolute;
-      left: .85rem;
-      top: .85rem;
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      padding: .45rem .75rem;
+      left: 50%;
+      top: 50%;
+      z-index: 5;
+      transform: translate(-50%, -50%);
+      width: 54px;
+      height: 54px;
       border-radius: 999px;
-      background: rgba(255,255,255,.88);
-      border: 1px solid rgba(226,232,240,.95);
-      color: #1f2f46;
-      font-size: .70rem;
+      background: rgba(255,0,51,.96);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 16px 40px rgba(255,0,51,.34);
+      border: 2px solid rgba(255,255,255,.75);
+    }
+
+    .duration {
+      position: absolute;
+      right: .7rem;
+      bottom: .65rem;
+      z-index: 5;
+      border-radius: .5rem;
+      background: rgba(0,0,0,.82);
+      color: #fff;
+      padding: .18rem .45rem;
+      font-size: .74rem;
+      font-weight: 850;
+    }
+
+    .tag-top {
+      position: absolute;
+      left: .75rem;
+      top: .75rem;
+      z-index: 5;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: #0f172a;
+      padding: .32rem .62rem;
+      font-size: .68rem;
       font-weight: 900;
       letter-spacing: .08em;
       text-transform: uppercase;
+      border: 1px solid rgba(226,232,240,.8);
       backdrop-filter: blur(8px);
     }
-    .preview-caption {
-      position: absolute;
-      left: 1rem;
-      right: 1rem;
-      bottom: .9rem;
-      z-index: 2;
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #0f2f57 0%, #2563eb 100%);
       color: #fff;
+      font-weight: 950;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+      flex: 0 0 auto;
     }
-    .preview-caption .preview-title {
-      display: block;
-      font-size: .95rem;
-      font-weight: 900;
-      letter-spacing: -.02em;
-      line-height: 1.1;
+
+    .channel-hero {
+      background:
+        radial-gradient(circle at 12% 22%, rgba(128,199,239,.35), transparent 28%),
+        radial-gradient(circle at 86% 18%, rgba(255,0,51,.17), transparent 26%),
+        linear-gradient(135deg, #06111f 0%, #0f2f57 54%, #0f172a 100%);
     }
-    .preview-caption .preview-subtitle {
-      display: block;
-      margin-top: .2rem;
-      font-size: .72rem;
-      font-weight: 700;
-      color: rgba(255,255,255,.88);
-      text-transform: uppercase;
-      letter-spacing: .08em;
+
+    .scroll-strip {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
+    .scroll-strip::-webkit-scrollbar { display: none; }
+
+    .modal-backdrop {
+      background: rgba(15,23,42,.68);
+      backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 1024px) {
+      .left-rail { display: none; }
+      main { margin-left: 0 !important; }
+    }
+
     @media (max-width: 640px) {
-      .module-preview {
-        aspect-ratio: 16 / 11;
-      }
-      .preview-caption .preview-title {
-        font-size: .88rem;
-      }
+      .topbar { height: auto; }
+      .mobile-stack { flex-direction: column; align-items: stretch; }
+      .video-card:hover { transform: none; }
+      .thumb { border-radius: 14px; }
     }
-</style>
+  </style>
 </head>
-<body class="text-slate-800 min-h-screen">
-<div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#07111d] transition-opacity duration-700" id="splash">
-<div class="px-6">
-<div class="rounded-[32px] border border-white/10 bg-white/5 px-8 py-7 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.35)] text-center">
-<div class="mx-auto mb-4 h-3 w-16 rounded-full bg-gradient-to-r from-skyBrand via-white to-skyBrand opacity-90 animate-pulse"></div>
-<div class="text-white text-3xl sm:text-5xl font-black tracking-tight uppercase">Real World <span class="text-skyBrand">CE</span></div>
-<div class="mt-2 text-blue-100/80 text-xs sm:text-sm font-semibold uppercase tracking-[0.28em]">Launching Platform</div>
-</div>
-</div>
-</div>
-<header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/88 backdrop-blur-xl">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-<div class="min-w-0">
-<div class="font-black tracking-tight text-lg sm:text-xl text-medicalBlue uppercase">Real World <span class="text-blue-600">CE</span></div>
-<div class="text-[11px] sm:text-sm text-slate-500 font-medium">Clinical learning launch portal</div>
-</div>
-<div class="hidden lg:flex items-center gap-3 text-sm">
-<a class="px-4 py-2 rounded-full border border-slate-200 text-slate-600 font-semibold hover:border-blue-300 hover:text-blue-700 transition" href="#library">Library</a>
-<a class="px-4 py-2 rounded-full border border-slate-200 text-slate-600 font-semibold hover:border-blue-300 hover:text-blue-700 transition" href="#featured">Featured</a>
-<a class="px-4 py-2 rounded-full border border-slate-200 text-slate-600 font-semibold hover:border-blue-300 hover:text-blue-700 transition" href="#collections">Collections</a>
-<a class="px-4 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-glow" href="#library">Launch Portal</a>
-</div>
-<div class="mobile-chip-row lg:hidden -mx-1 overflow-x-auto">
-<div class="flex w-max gap-2 px-1 pb-1">
-<a class="px-3 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-sm font-semibold whitespace-nowrap" href="#library">Library</a>
-<a class="px-3 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-sm font-semibold whitespace-nowrap" href="#featured">Featured</a>
-<a class="px-3 py-2 rounded-full border border-slate-200 bg-white text-slate-700 text-sm font-semibold whitespace-nowrap" href="#collections">Collections</a>
-<a class="px-3 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold whitespace-nowrap shadow-glow" href="#library">Launch</a>
-</div>
-</div>
-</div>
-</header>
-<section class="hero-bg text-white relative overflow-hidden">
-<div class="absolute inset-0 opacity-15 bg-[radial-gradient(circle_at_20%_20%,white_0,transparent_28%),radial-gradient(circle_at_80%_10%,white_0,transparent_22%),radial-gradient(circle_at_75%_75%,white_0,transparent_20%)]"></div>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 relative z-10">
-<div class="grid lg:grid-cols-[1.4fr_.9fr] gap-8 items-center">
-<div>
-<div class="flex flex-wrap items-center gap-2 mb-5">
-<span class="px-3 py-1 rounded-full bg-white/12 border border-white/15 text-[11px] font-black uppercase tracking-[0.18em]">Launch Library</span>
-<span class="px-3 py-1 rounded-full bg-emerald-500/90 text-[11px] font-black uppercase tracking-[0.18em]">17 Linked Projects</span>
-<span class="px-3 py-1 rounded-full bg-blue-400/80 text-[11px] font-black uppercase tracking-[0.18em]">Clean Platform Build</span>
-</div>
-<h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] max-w-4xl">
-            Bringing the <span class="text-skyBrand">Real World</span> Into CE.
-          </h1>
-<p class="mt-5 max-w-3xl text-blue-100 text-base sm:text-lg leading-relaxed">
-            This version keeps the layout clean and client facing while giving you fast access to every live module and simulation you listed.
+
+<body>
+  <!-- Top navigation: YouTube-inspired clean header -->
+  <header class="topbar sticky top-0 z-50">
+    <div class="h-full px-4 sm:px-5 flex items-center gap-4 mobile-stack py-3 sm:py-0">
+      <div class="flex items-center gap-3 min-w-fit">
+        <button class="hidden lg:grid h-10 w-10 place-items-center rounded-full hover:bg-slate-100" aria-label="Menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+
+      <div class="flex-1 max-w-3xl mx-auto w-full">
+        <label class="flex items-center h-11 rounded-full border border-slate-300 bg-white overflow-hidden shadow-sm focus-within:border-blue-400 focus-within:ring-4 focus-within:ring-blue-50 transition">
+          <input id="searchInput" type="search" placeholder="Search Real World CE modules..." class="h-full min-w-0 flex-1 px-5 text-sm font-semibold outline-none" />
+          <button class="h-full w-16 bg-slate-50 border-l border-slate-200 hover:bg-slate-100 transition" type="button" aria-label="Search">
+            <span class="material-symbols-outlined text-slate-600">search</span>
+          </button>
+        </label>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 min-w-fit">
+        <a href="#library" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-sm font-extrabold transition">
+          <span class="material-symbols-outlined text-[19px]">subscriptions</span>
+          Library
+        </a>
+        <a href="#contact" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ytRed text-white text-sm font-extrabold shadow-[0_12px_30px_rgba(255,0,51,.2)] hover:brightness-95 transition">
+          <span class="material-symbols-outlined text-[19px]">mail</span>
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Left navigation rail -->
+  <aside class="left-rail fixed left-0 z-40 overflow-y-auto border-r border-slate-200 bg-white px-3 py-4">
+    <nav class="space-y-1">
+      <a class="rail-link active" href="#home"><span class="material-symbols-outlined">home</span>Home</a>
+      <a class="rail-link" href="#library"><span class="material-symbols-outlined">subscriptions</span>Modules</a>
+      <a class="rail-link" href="#featured"><span class="material-symbols-outlined">smart_display</span>Featured</a>
+      <a class="rail-link" href="#simulations"><span class="material-symbols-outlined">science</span>Simulations</a>
+      <a class="rail-link" href="#analytics"><span class="material-symbols-outlined">bar_chart</span>Views</a>
+    </nav>
+
+    <div class="my-4 border-t border-slate-200"></div>
+
+    <div class="px-2">
+      <div class="text-xs font-black uppercase tracking-[.16em] text-slate-400 mb-3">Collections</div>
+      <div id="sideCollections" class="space-y-1"></div>
+    </div>
+
+    <div class="my-4 border-t border-slate-200"></div>
+
+    <div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">
+      <div class="text-sm font-black text-ink">Real World CE</div>
+      <p class="mt-1 text-xs leading-relaxed text-slate-500">Bringing the Real World Into Clinical Education.</p>
+    </div>
+  </aside>
+
+  <main class="lg:ml-[236px]">
+    <!-- Channel hero -->
+    <section id="home" class="px-4 sm:px-6 lg:px-8 pt-6">
+      <div class="channel-hero rounded-[28px] overflow-hidden shadow-soft text-white">
+        <div class="grid lg:grid-cols-[1.05fr_.95fr] gap-6 p-5 sm:p-8 lg:p-10">
+          <div class="flex flex-col justify-center">
+            <div class="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3 py-1 text-[11px] font-black uppercase tracking-[.16em]">
+              <span class="h-2 w-2 rounded-full bg-ytRed"></span>
+              Featured Channel
+            </div>
+
+            <h1 class="mt-5 text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02]">
+              Real World CE<br />
+              <span class="text-brandSky">Module Watch Portal</span>
+            </h1>
+
+            <p class="mt-5 max-w-2xl text-blue-100/90 text-base sm:text-lg leading-relaxed font-medium">
+              A cleaner video-library experience for browsing clinical modules, simulations, assessments, and launch-ready education links.
+            </p>
+
+            <div class="mt-7 flex flex-col sm:flex-row gap-3">
+              <a href="#library" class="inline-flex items-center justify-center gap-2 rounded-full bg-white text-ink px-5 py-3 font-black hover:bg-slate-100 transition">
+                <span class="material-symbols-outlined text-ytRed">play_circle</span>
+                Start Watching
+              </a>
+              <button id="openFeatured" class="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 border border-white/15 px-5 py-3 font-black hover:bg-white/15 transition">
+                <span class="material-symbols-outlined">smart_display</span>
+                Featured Module
+              </button>
+            </div>
+          </div>
+
+          <div id="featured" class="rounded-[24px] bg-black/20 border border-white/10 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,.12)]">
+            <div class="thumb rounded-[20px] border-white/10" id="featuredThumb">
+              <div class="tag-top">Featured</div>
+              <img id="featuredImage" class="thumbnail-img" alt="Featured module preview" />
+              <div class="play-pill">
+                <span class="material-symbols-outlined text-[34px]">play_arrow</span>
+              </div>
+              <div class="duration">Real World CE</div>
+            </div>
+            <div class="flex gap-3 mt-4 px-1 pb-1">
+              <div class="avatar">CE</div>
+              <div class="min-w-0">
+                <h2 id="featuredTitle" class="text-xl sm:text-2xl font-black tracking-tight">Tardive Dyskinesia Module</h2>
+                <p id="featuredMeta" class="mt-1 text-sm text-blue-100/80 font-semibold">Real World CE · Neurology · Module</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category strip -->
+    <section class="sticky top-[64px] z-30 bg-white/95 backdrop-blur-xl border-b border-slate-200/70 mt-4">
+      <div class="px-4 sm:px-6 lg:px-8 py-3">
+        <div id="categoryChips" class="scroll-strip flex gap-2 overflow-x-auto pb-1"></div>
+      </div>
+    </section>
+
+    <!-- Main library grid -->
+    <section id="library" class="px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
+        <div>
+          <div class="text-xs font-black uppercase tracking-[.18em] text-ytRed">Module Feed</div>
+          <h2 class="mt-1 text-2xl sm:text-3xl font-black tracking-tight text-ink">Latest Real World CE uploads</h2>
+          <p class="mt-1 text-slate-500 font-medium">Video-style cards with searchable module links and local view counts.</p>
+        </div>
+        <div class="inline-flex w-fit items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 shadow-sm">
+          <span class="material-symbols-outlined text-ytRed text-[20px]">live_tv</span>
+          <span class="text-sm font-black"><span id="resultCount">17</span> live links</span>
+        </div>
+      </div>
+
+      <div id="moduleGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-5 gap-y-8"></div>
+
+      <div id="emptyState" class="hidden rounded-[24px] border border-dashed border-slate-300 bg-white p-10 text-center">
+        <span class="material-symbols-outlined text-[48px] text-slate-300">search_off</span>
+        <h3 class="mt-3 text-xl font-black">No modules found</h3>
+        <p class="mt-1 text-slate-500 font-semibold">Try a different search or choose another category.</p>
+      </div>
+    </section>
+
+    <!-- Stats / analytics -->
+    <section id="analytics" class="px-4 sm:px-6 lg:px-8 pb-6">
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="rounded-[24px] bg-white border border-slate-200 p-5 shadow-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-black uppercase tracking-[.16em] text-slate-400">Library</div>
+              <div class="mt-1 text-3xl font-black text-ink" id="statModules">17</div>
+            </div>
+            <span class="material-symbols-outlined text-ytRed text-[34px]">video_library</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-500 font-semibold">Total live learning links.</p>
+        </div>
+
+        <div class="rounded-[24px] bg-white border border-slate-200 p-5 shadow-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-black uppercase tracking-[.16em] text-slate-400">Categories</div>
+              <div class="mt-1 text-3xl font-black text-ink" id="statAreas">0</div>
+            </div>
+            <span class="material-symbols-outlined text-blue-600 text-[34px]">category</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-500 font-semibold">Clinical topic collections.</p>
+        </div>
+
+        <div class="rounded-[24px] bg-white border border-slate-200 p-5 shadow-card">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs font-black uppercase tracking-[.16em] text-slate-400">Local Views</div>
+              <div class="mt-1 text-3xl font-black text-ink" id="statViews">0</div>
+            </div>
+            <span class="material-symbols-outlined text-emerald-600 text-[34px]">visibility</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-500 font-semibold">Tracked in this browser using localStorage.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact block -->
+    <section id="contact" class="px-4 sm:px-6 lg:px-8 pb-10">
+      <div class="rounded-[28px] bg-ink text-white p-6 sm:p-8 overflow-hidden relative">
+        <div class="absolute inset-y-0 right-0 w-1/2 opacity-30 bg-[radial-gradient(circle_at_70%_40%,#80c7ef,transparent_35%),radial-gradient(circle_at_80%_70%,#ff0033,transparent_28%)]"></div>
+        <div class="relative z-10 max-w-2xl">
+          <div class="text-xs font-black uppercase tracking-[.18em] text-brandSky">Contact Us</div>
+          <h2 class="mt-2 text-2xl sm:text-4xl font-black tracking-tight">Ready to build a Real World CE experience?</h2>
+          <p class="mt-3 text-slate-300 leading-relaxed font-medium">
+            Reach out for more information about interactive clinical education modules, simulations, patient cases, and premium CE platform design.
           </p>
-<div class="mt-8 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-5 py-3 rounded-xl bg-white text-medicalBlue font-bold shadow-soft hover:translate-y-[-1px] transition" href="#library">
-<span class="material-symbols-outlined text-[20px]">apps</span> Browse All Links
+          <a href="mailto:info@realworldce.org" class="mt-6 inline-flex items-center gap-2 rounded-full bg-white text-ink px-5 py-3 font-black hover:bg-slate-100 transition">
+            <span class="material-symbols-outlined text-ytRed">mail</span>
+            Contact Real World CE
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Watch modal -->
+  <div id="watchModal" class="fixed inset-0 z-[100] hidden">
+    <div class="modal-backdrop absolute inset-0" data-close-modal></div>
+    <div class="relative z-10 min-h-full flex items-center justify-center p-4">
+      <div class="w-full max-w-4xl rounded-[28px] bg-white shadow-[0_30px_90px_rgba(0,0,0,.28)] overflow-hidden">
+        <div id="modalThumb" class="thumb rounded-none border-0">
+          <img id="modalImage" class="thumbnail-img" alt="Selected module preview" />
+          <div class="play-pill">
+            <span class="material-symbols-outlined text-[34px]">play_arrow</span>
+          </div>
+          <div class="duration">Launch Module</div>
+        </div>
+        <div class="p-5 sm:p-6">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex gap-3 min-w-0">
+              <div class="avatar">CE</div>
+              <div class="min-w-0">
+                <h3 id="modalTitle" class="text-2xl font-black tracking-tight text-ink"></h3>
+                <p id="modalMeta" class="mt-1 text-sm font-semibold text-slate-500"></p>
+              </div>
+            </div>
+            <button class="grid h-10 w-10 place-items-center rounded-full bg-slate-100 hover:bg-slate-200 transition" data-close-modal aria-label="Close">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+          <p id="modalDescription" class="mt-5 text-slate-600 leading-relaxed font-medium"></p>
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <a id="modalOpenLink" href="#" target="_blank" rel="noopener noreferrer" class="tracked-link inline-flex items-center justify-center gap-2 rounded-full bg-ytRed text-white px-5 py-3 font-black hover:brightness-95 transition">
+              <span class="material-symbols-outlined">open_in_new</span>
+              Open Module
             </a>
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-5 py-3 rounded-xl border border-white/20 bg-white/10 font-bold hover:bg-white/15 transition" href="#collections">
-<span class="material-symbols-outlined text-[20px]">folder_open</span> View Collections
-            </a>
-</div>
-</div>
-<div class="glass rounded-3xl p-6 shadow-soft text-slate-900" id="featured">
-<div class="flex items-center justify-between mb-5">
-<div>
-<div class="text-xs font-black uppercase tracking-[0.2em] text-blue-700">Featured Launches</div>
-<div class="text-2xl font-black tracking-tight text-medicalBlue mt-1">Quick Access</div>
-</div>
-<span class="material-symbols-outlined text-blue-500 text-[30px]">rocket_launch</span>
-</div>
-<div class="space-y-4">
-<div class="rounded-2xl bg-white border border-slate-200 p-4">
-<div class="flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-3">
-<div>
-<div class="font-bold text-slate-800">Tardive Dyskinesia Module</div>
-</div>
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-1 px-3 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/Realworldce_TD_Module/" href="https://brianhicks211.github.io/Realworldce_TD_Module/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[16px]">play_arrow</span> Open
-                </a>
-</div>
-<div class="mt-3"><div class="view-pill"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span><span class="view-count" data-view-key="https://brianhicks211.github.io/Realworldce_TD_Module/">0</span> views</div></div>
-</div>
-<div class="rounded-2xl bg-white border border-slate-200 p-4">
-<div class="flex flex-col items-start sm:flex-row sm:items-center sm:justify-between gap-3">
-<div>
-<div class="font-bold text-slate-800">Prostate PARPi</div>
-</div>
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-1 px-3 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/" href="https://RealWorldCE.github.io/ProstatePARPi/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[16px]">play_arrow</span> Open
-                </a>
-</div>
-<div class="mt-3"><div class="view-pill"><span class="material-symbols-outlined" style="font-size:16px;">visibility</span><span class="view-count" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/">0</span> views</div></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-<section class="grid xl:grid-cols-[1.3fr_.7fr] gap-6 sm:gap-8">
-<div class="space-y-6" id="library">
-<div class="glass rounded-3xl p-5 sm:p-6 shadow-soft">
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-<div>
-<div class="text-xs font-black uppercase tracking-[0.18em] text-blue-700">Module Library</div>
-<h2 class="text-2xl sm:text-3xl font-black tracking-tight text-medicalBlue mt-1">All live links in one place</h2>
-<p class="text-slate-500 mt-1">Search your sites and open each live experience from one premium portal.</p>
-</div>
-<div class="mobile-chip-row -mx-1 overflow-x-auto pb-1">
-<div class="flex w-max gap-2 px-1">
-<button class="chip active px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold" data-filter="all">All</button>
-<button class="chip px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="real world ce">Real World CE</button>
-<button class="chip px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="module">Modules</button>
-</div>
-</div>
-</div>
-<div class="mt-5 grid md:grid-cols-[1fr_auto] gap-3">
-<label class="relative block">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-<input class="w-full h-12 rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm font-medium outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50" id="searchInput" placeholder="Search by module title, owner, or type..." type="text"/>
-</label>
-<div class="h-12 w-full md:w-auto rounded-2xl bg-medicalBlue text-white px-5 text-sm font-bold inline-flex items-center justify-center">17 live links</div>
-</div>
-</div>
-<div class="grid sm:grid-cols-2 gap-5" id="moduleGrid">
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="oncology" data-kind="module" data-owner="real world ce" data-title="prostate parpi">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Oncology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Oncology" data-preview-target="https://RealWorldCE.github.io/ProstatePARPi/" data-preview-title="Prostate PARPi">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Prostate PARPi preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Prostate PARPi</span>
-<span class="preview-subtitle">Oncology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Prostate PARPi</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Prostate PARPi available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/" href="https://RealWorldCE.github.io/ProstatePARPi/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="neurology" data-kind="module" data-owner="real world ce" data-title="narcolepsy type 1">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Neurology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Neurology" data-preview-target="https://RealWorldCE.github.io/Narcolepsy-Type1/" data-preview-title="Narcolepsy Type 1">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Narcolepsy Type 1 preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Narcolepsy Type 1</span>
-<span class="preview-subtitle">Neurology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Narcolepsy Type 1</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Narcolepsy Type 1 available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Narcolepsy-Type1/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Narcolepsy-Type1/" href="https://RealWorldCE.github.io/Narcolepsy-Type1/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="neurology" data-kind="module" data-owner="real world ce" data-title="cidp">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Neurology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Neurology" data-preview-target="https://RealWorldCE.github.io/CIDP/" data-preview-title="CIDP">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="CIDP preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">CIDP</span>
-<span class="preview-subtitle">Neurology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">CIDP</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">CIDP available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/CIDP/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/CIDP/" href="https://RealWorldCE.github.io/CIDP/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="oncology" data-kind="module" data-owner="real world ce" data-title="myelofibrosis module">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Oncology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Oncology" data-preview-target="https://RealWorldCE.github.io/Myelofibrosis_Module/" data-preview-title="Myelofibrosis Module">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Myelofibrosis Module preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Myelofibrosis Module</span>
-<span class="preview-subtitle">Oncology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Myelofibrosis Module</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Myelofibrosis Module available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Myelofibrosis_Module/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Myelofibrosis_Module/" href="https://RealWorldCE.github.io/Myelofibrosis_Module/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="dermatology" data-kind="module" data-owner="real world ce" data-title="psoriatic disease">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Dermatology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Dermatology" data-preview-target="https://RealWorldCE.github.io/Psoriatic_Disease/" data-preview-title="Psoriatic Disease">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Psoriatic Disease preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Psoriatic Disease</span>
-<span class="preview-subtitle">Dermatology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Psoriatic Disease</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Psoriatic Disease available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Psoriatic_Disease/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Psoriatic_Disease/" href="https://RealWorldCE.github.io/Psoriatic_Disease/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="urology" data-kind="module" data-owner="real world ce" data-title="oab module">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Urology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Urology" data-preview-target="https://RealWorldCE.github.io/OABModule/" data-preview-title="OAB Module">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="OAB Module preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">OAB Module</span>
-<span class="preview-subtitle">Urology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">OAB Module</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">OAB Module available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/OABModule/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/OABModule/" href="https://RealWorldCE.github.io/OABModule/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="neurology" data-kind="module" data-owner="real world ce" data-title="narcolepsy">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Neurology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Neurology" data-preview-target="https://RealWorldCE.github.io/Narcolepsy/" data-preview-title="Narcolepsy">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Narcolepsy preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Narcolepsy</span>
-<span class="preview-subtitle">Neurology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Narcolepsy</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Narcolepsy available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Narcolepsy/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Narcolepsy/" href="https://RealWorldCE.github.io/Narcolepsy/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="immunology / id" data-kind="module" data-owner="real world ce" data-title="pid">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Immunology / ID</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Immunology / Id" data-preview-target="https://RealWorldCE.github.io/PID/" data-preview-title="PID">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="PID preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">PID</span>
-<span class="preview-subtitle">Immunology / Id</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">PID</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">PID available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/PID/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/PID/" href="https://RealWorldCE.github.io/PID/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="immunology / id" data-kind="module" data-owner="real world ce" data-title="cmv">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Immunology / ID</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Immunology / Id" data-preview-target="https://RealWorldCE.github.io/CMV/" data-preview-title="CMV">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="CMV preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">CMV</span>
-<span class="preview-subtitle">Immunology / Id</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">CMV</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">CMV available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://RealWorldCE.github.io/CMV/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/CMV/" href="https://RealWorldCE.github.io/CMV/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="neurology" data-kind="module" data-owner="real world ce" data-title="real world cidp">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Neurology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Neurology" data-preview-target="https://brianhicks211.github.io/REALWORLDCIDP/" data-preview-title="Real World CIDP">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Real World CIDP preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Real World CIDP</span>
-<span class="preview-subtitle">Neurology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Real World CIDP</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Real World CIDP available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/REALWORLDCIDP/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/REALWORLDCIDP/" href="https://brianhicks211.github.io/REALWORLDCIDP/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="neurology" data-kind="module" data-owner="real world ce" data-title="tardive dyskinesia module">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Neurology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Neurology" data-preview-target="https://brianhicks211.github.io/Realworldce_TD_Module/" data-preview-title="Tardive Dyskinesia Module">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Tardive Dyskinesia Module preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Tardive Dyskinesia Module</span>
-<span class="preview-subtitle">Neurology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Tardive Dyskinesia Module</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Tardive Dyskinesia Module available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/Realworldce_TD_Module/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/Realworldce_TD_Module/" href="https://brianhicks211.github.io/Realworldce_TD_Module/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="psychiatry" data-kind="simulation" data-owner="real world ce" data-title="lai module demo">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Psychiatry</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Simulation</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Psychiatry" data-preview-target="https://brianhicks211.github.io/brianhicks211-realworldce_LAI_Module_demo/" data-preview-title="LAI Module Demo">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="LAI Module Demo preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">LAI Module Demo</span>
-<span class="preview-subtitle">Psychiatry</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">LAI Module Demo</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">LAI Module Demo available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Simulation</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/brianhicks211-realworldce_LAI_Module_demo/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/brianhicks211-realworldce_LAI_Module_demo/" href="https://brianhicks211.github.io/brianhicks211-realworldce_LAI_Module_demo/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="immunology / id" data-kind="module" data-owner="real world ce" data-title="takeda pid">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Immunology / ID</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Immunology / Id" data-preview-target="https://brianhicks211.github.io/takeda_PID/" data-preview-title="Takeda PID">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Takeda PID preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Takeda PID</span>
-<span class="preview-subtitle">Immunology / Id</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Takeda PID</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Takeda PID available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/takeda_PID/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/takeda_PID/" href="https://brianhicks211.github.io/takeda_PID/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="immunology / id" data-kind="module" data-owner="real world ce" data-title="real world cmv module ver 2.0">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Immunology / ID</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Immunology / Id" data-preview-target="https://brianhicks211.github.io/RealWorldCMVModule_Ver2.0/" data-preview-title="Real World CMV Module Ver 2.0">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Real World CMV Module Ver 2.0 preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Real World CMV Module Ver 2.0</span>
-<span class="preview-subtitle">Immunology / Id</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Real World CMV Module Ver 2.0</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Real World CMV Module Ver 2.0 available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/RealWorldCMVModule_Ver2.0/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/RealWorldCMVModule_Ver2.0/" href="https://brianhicks211.github.io/RealWorldCMVModule_Ver2.0/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="urology" data-kind="module" data-owner="real world ce" data-title="oab real world ce">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Urology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Module</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Urology" data-preview-target="https://brianhicks211.github.io/OAB_REALWORLDCE/" data-preview-title="OAB Real World CE">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="OAB Real World CE preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">OAB Real World CE</span>
-<span class="preview-subtitle">Urology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">OAB Real World CE</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">OAB Real World CE available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Module</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/OAB_REALWORLDCE/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/OAB_REALWORLDCE/" href="https://brianhicks211.github.io/OAB_REALWORLDCE/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="clinical education" data-kind="assessment" data-owner="real world ce" data-title="real quiz">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Clinical Education</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Assessment</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Clinical Education" data-preview-target="https://brianhicks211.github.io/Realquiz/" data-preview-title="Real Quiz">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Real Quiz preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Real Quiz</span>
-<span class="preview-subtitle">Clinical Education</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Real Quiz</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Real Quiz available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Assessment</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/Realquiz/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/Realquiz/" href="https://brianhicks211.github.io/Realquiz/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-<article class="module-card glass rounded-3xl p-5 shadow-soft border border-slate-200" data-area="dermatology" data-kind="simulation" data-owner="real world ce" data-title="psoriasis simulation">
-<div class="flex items-start justify-between gap-3">
-<div class="flex flex-wrap gap-2">
-<span class="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[11px] font-black uppercase tracking-wider">Dermatology</span>
-<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-black uppercase tracking-wider">Simulation</span>
-</div>
-<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[11px] font-black uppercase tracking-wider">Real World CE</span>
-</div><div class="module-preview" data-preview-area="Dermatology" data-preview-target="https://brianhicks211.github.io/psoriasis-simulation/" data-preview-title="Psoriasis Simulation">
-<div class="preview-label"><span class="material-symbols-outlined" style="font-size:16px">image</span>Preview</div>
-<img alt="Psoriasis Simulation preview" class="module-preview-image" loading="lazy"/>
-<div class="preview-caption">
-<span class="preview-title">Psoriasis Simulation</span>
-<span class="preview-subtitle">Dermatology</span>
-</div>
-</div>
-<h3 class="mt-4 text-xl font-black tracking-tight text-medicalBlue">Psoriasis Simulation</h3>
-<p class="mt-2 text-sm leading-relaxed text-slate-600">Psoriasis Simulation available here with a direct launch path for fast access.</p>
-<div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Owner</div>
-<div class="mt-1 font-bold">Real World CE</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200">
-<div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Type</div>
-<div class="mt-1 font-bold">Simulation</div>
-</div>
-<div class="rounded-2xl bg-slate-50 p-3 border border-slate-200"><div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Views</div><div class="mt-1 font-bold"><span class="view-count" data-view-key="https://brianhicks211.github.io/psoriasis-simulation/">0</span> views</div></div>
-</div>
-<div class="mt-5 flex flex-col sm:flex-row gap-3">
-<a class="inline-flex w-full sm:w-auto justify-center items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition tracked-link" data-view-key="https://brianhicks211.github.io/psoriasis-simulation/" href="https://brianhicks211.github.io/psoriasis-simulation/" rel="noopener noreferrer" target="_blank">
-<span class="material-symbols-outlined text-[18px]">launch</span> Open Site
-              </a>
-</div>
-</article>
-</div>
-</div>
-<aside class="space-y-6">
-<div class="glass rounded-3xl p-6 shadow-soft">
-<div class="flex items-center justify-between mb-4">
-<div>
-<div class="text-xs font-black uppercase tracking-[0.18em] text-blue-700">Portal Status</div>
-<h3 class="text-xl font-black tracking-tight text-medicalBlue mt-1">Platform overview</h3>
-</div>
-<span class="material-symbols-outlined text-blue-500">dashboard</span>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-<div class="rounded-2xl bg-blue-50 border border-blue-100 p-4">
-<div class="text-[11px] uppercase tracking-widest font-black text-blue-500">Total links</div>
-<div class="mt-2 text-3xl font-black text-medicalBlue">17</div>
-</div>
-<div class="rounded-2xl bg-emerald-50 border border-emerald-100 p-4">
-<div class="text-[11px] uppercase tracking-widest font-black text-emerald-500">Owner Label</div>
-<div class="mt-2 text-3xl font-black text-medicalBlue">1</div>
-</div>
-<div class="rounded-2xl bg-violet-50 border border-violet-100 p-4">
-<div class="text-[11px] uppercase tracking-widest font-black text-violet-500">Modules</div>
-<div class="mt-2 text-3xl font-black text-medicalBlue">15</div>
-</div>
-<div class="rounded-2xl bg-amber-50 border border-amber-100 p-4">
-<div class="text-[11px] uppercase tracking-widest font-black text-amber-500">Total views</div>
-<div class="mt-2 text-3xl font-black text-medicalBlue" id="totalLaunchCount">0</div>
-</div>
-</div>
-</div>
-<div class="track-card glass rounded-3xl p-6 shadow-soft" id="collections">
-<div class="text-xs font-black uppercase tracking-[0.18em] text-blue-700">Collections</div>
-<h3 class="text-xl font-black tracking-tight text-medicalBlue mt-1">Quick launch groups</h3>
-<div class="mt-5 space-y-4">
-<div class="rounded-2xl border border-slate-200 bg-white p-4">
-<div class="flex items-center justify-between">
-<div class="font-bold text-slate-800">Real World CE Library</div>
-<span class="text-xs font-black bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full">8 Links</span>
-</div>
-<p class="mt-2 text-sm text-slate-500">Core Real World CE launches including PARPi, Narcolepsy, CIDP, OAB, PID, CMV, and more.</p>
-</div>
-<div class="rounded-2xl border border-slate-200 bg-white p-4">
-<div class="flex items-center justify-between">
-<div class="font-bold text-slate-800">Real World CE Builds</div>
-<span class="text-xs font-black bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full">9 Links</span>
-</div>
-<p class="mt-2 text-sm text-slate-500">Real World CE launch builds including TD, CMV, LAI, quiz, OAB, and psoriasis simulation work.</p>
-</div>
-<div class="rounded-2xl border border-slate-200 bg-white p-4">
-<div class="flex items-center justify-between">
-<div class="font-bold text-slate-800">Fast Access</div>
-<span class="text-xs font-black bg-violet-50 text-violet-700 px-2.5 py-1 rounded-full">Pinned</span>
-</div>
-<div class="mt-3 flex flex-wrap gap-2">
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/" href="https://RealWorldCE.github.io/ProstatePARPi/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>Prostate PARPi<span class="view-badge" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/ProstatePARPi/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Narcolepsy-Type1/" href="https://RealWorldCE.github.io/Narcolepsy-Type1/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>Narcolepsy Type 1<span class="view-badge" data-view-key="https://RealWorldCE.github.io/Narcolepsy-Type1/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Narcolepsy-Type1/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/CIDP/" href="https://RealWorldCE.github.io/CIDP/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>CIDP<span class="view-badge" data-view-key="https://RealWorldCE.github.io/CIDP/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/CIDP/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Myelofibrosis_Module/" href="https://RealWorldCE.github.io/Myelofibrosis_Module/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>Myelofibrosis Module<span class="view-badge" data-view-key="https://RealWorldCE.github.io/Myelofibrosis_Module/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Myelofibrosis_Module/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Psoriatic_Disease/" href="https://RealWorldCE.github.io/Psoriatic_Disease/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>Psoriatic Disease<span class="view-badge" data-view-key="https://RealWorldCE.github.io/Psoriatic_Disease/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Psoriatic_Disease/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/OABModule/" href="https://RealWorldCE.github.io/OABModule/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>OAB Module<span class="view-badge" data-view-key="https://RealWorldCE.github.io/OABModule/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/OABModule/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/Narcolepsy/" href="https://RealWorldCE.github.io/Narcolepsy/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>Narcolepsy<span class="view-badge" data-view-key="https://RealWorldCE.github.io/Narcolepsy/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/Narcolepsy/">0</span> views</span></a>
-<a class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700 transition tracked-link" data-view-key="https://RealWorldCE.github.io/PID/" href="https://RealWorldCE.github.io/PID/" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined text-[16px]">link</span>PID<span class="view-badge" data-view-key="https://RealWorldCE.github.io/PID/"><span class="view-count" data-view-key="https://RealWorldCE.github.io/PID/">0</span> views</span></a>
-</div>
-</div>
-</div>
-</div>
-<div class="glass rounded-3xl p-6 shadow-soft">
-<div class="text-xs font-black uppercase tracking-[0.18em] text-blue-700">What Changed</div>
-<h3 class="text-xl font-black tracking-tight text-medicalBlue mt-1">This version</h3>
-<div class="mt-5 space-y-3 text-sm text-slate-600">
-<div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">All visible logo images were removed from the layout.</div>
-<div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">Every project you listed now has a live launch path inside this portal.</div>
-<div class="rounded-2xl bg-slate-50 border border-slate-200 p-4">A searchable launcher grid was added so this acts more like a real platform hub.</div>
-</div>
-</div>
-</aside>
-</section>
-</main>
+            <button class="inline-flex items-center justify-center gap-2 rounded-full bg-slate-100 px-5 py-3 font-black hover:bg-slate-200 transition" data-close-modal>
+              <span class="material-symbols-outlined">arrow_back</span>
+              Back to Library
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
-    window.addEventListener('load', () => {
-      const splash = document.getElementById('splash');
-      if (splash) {
-        setTimeout(() => {
-          splash.classList.add('hidden-splash');
-          setTimeout(() => {
-            splash.style.display = 'none';
-          }, 700);
-        }, 850);
-      }
+  const modules = [
+  {
+    "name": "Prostate PARPi",
+    "area": "Oncology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/ProstatePARPi/"
+  },
+  {
+    "name": "Narcolepsy Type 1",
+    "area": "Neurology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/Narcolepsy-Type1/"
+  },
+  {
+    "name": "CIDP",
+    "area": "Neurology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/CIDP/"
+  },
+  {
+    "name": "Myelofibrosis Module",
+    "area": "Oncology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/Myelofibrosis_Module/"
+  },
+  {
+    "name": "Psoriatic Disease",
+    "area": "Dermatology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/Psoriatic_Disease/"
+  },
+  {
+    "name": "OAB Module",
+    "area": "Urology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/OABModule/"
+  },
+  {
+    "name": "Narcolepsy",
+    "area": "Neurology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/Narcolepsy/"
+  },
+  {
+    "name": "PID",
+    "area": "Immunology / ID",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/PID/"
+  },
+  {
+    "name": "CMV",
+    "area": "Immunology / ID",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://RealWorldCE.github.io/CMV/"
+  },
+  {
+    "name": "Real World CIDP",
+    "area": "Neurology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/REALWORLDCIDP/"
+  },
+  {
+    "name": "Tardive Dyskinesia Module",
+    "area": "Neurology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/Realworldce_TD_Module/"
+  },
+  {
+    "name": "LAI Module Demo",
+    "area": "Psychiatry",
+    "kind": "Simulation",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/brianhicks211-realworldce_LAI_Module_demo/"
+  },
+  {
+    "name": "Takeda PID",
+    "area": "Immunology / ID",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/takeda_PID/"
+  },
+  {
+    "name": "Real World CMV Module Ver 2.0",
+    "area": "Immunology / ID",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/RealWorldCMVModule_Ver2.0/"
+  },
+  {
+    "name": "OAB Real World CE",
+    "area": "Urology",
+    "kind": "Module",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/OAB_REALWORLDCE/"
+  },
+  {
+    "name": "Real Quiz",
+    "area": "Clinical Education",
+    "kind": "Assessment",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/Realquiz/"
+  },
+  {
+    "name": "Psoriasis Simulation",
+    "area": "Dermatology",
+    "kind": "Simulation",
+    "owner": "Real World CE",
+    "href": "https://brianhicks211.github.io/psoriasis-simulation/"
+  }
+];
 
-      initializeViewCounts();
-      initializeModulePreviews();
+  const descriptions = {
+    'Oncology': 'Clinical decision-making content built for oncology education and real-world workflow translation.',
+    'Neurology': 'Neurology-focused education designed around practical recognition, decision points, and patient-centered care.',
+    'Dermatology': 'Dermatology learning experience with patient-centered visuals, clinical context, and case-based progression.',
+    'Urology': 'Urology module focused on practical primary care decisions, treatment selection, and patient communication.',
+    'Immunology / ID': 'Immunology and infectious disease content organized for fast review and clinical learning.',
+    'Psychiatry': 'Psychiatry simulation experience designed to support applied learning and real-world decision-making.',
+    'Clinical Education': 'Assessment-based learning experience for checking understanding and reinforcing key takeaways.'
+  };
+
+  const durations = ['12:48', '09:35', '16:22', '11:04', '14:19', '08:57', '13:41', '10:26', '15:08', '07:44', '18:03', '09:12', '12:16', '17:30', '10:55', '06:49', '13:25'];
+  let activeCategory = 'All';
+  let searchTerm = '';
+
+  const grid = document.getElementById('moduleGrid');
+  const chips = document.getElementById('categoryChips');
+  const searchInput = document.getElementById('searchInput');
+  const resultCount = document.getElementById('resultCount');
+  const emptyState = document.getElementById('emptyState');
+
+  function storageKey(url) {
+    return 'rwce-watch-views::' + url;
+  }
+
+  function getViews(url) {
+    return Number(localStorage.getItem(storageKey(url)) || '0');
+  }
+
+  function setViews(url, count) {
+    localStorage.setItem(storageKey(url), String(count));
+  }
+
+  function incrementViews(url) {
+    setViews(url, getViews(url) + 1);
+    updateStats();
+  }
+
+  function totalViews() {
+    return modules.reduce((sum, item) => sum + getViews(item.href), 0);
+  }
+
+  function xmlSafe(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function buildFallback(title, area) {
+    const safeTitle = xmlSafe(title);
+    const safeArea = xmlSafe(area);
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#06111f"/>
+            <stop offset=".55" stop-color="#0f2f57"/>
+            <stop offset="1" stop-color="#111827"/>
+          </linearGradient>
+          <radialGradient id="r" cx="28%" cy="28%" r="60%">
+            <stop offset="0" stop-color="#80c7ef" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#80c7ef" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="1280" height="720" fill="url(#g)"/>
+        <rect width="1280" height="720" fill="url(#r)"/>
+        <circle cx="640" cy="360" r="86" fill="#ff0033" opacity=".95"/>
+        <path d="M620 314 L620 406 L696 360 Z" fill="white"/>
+        <text x="70" y="92" fill="#80c7ef" font-family="Inter, Arial" font-size="34" font-weight="900" letter-spacing="7">REAL WORLD CE</text>
+        <text x="70" y="590" fill="#ffffff" font-family="Inter, Arial" font-size="58" font-weight="900">${safeTitle}</text>
+        <text x="72" y="642" fill="#cbd5e1" font-family="Inter, Arial" font-size="28" font-weight="800" letter-spacing="5">${safeArea}</text>
+      </svg>
+    `;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
+  function screenshotSrc(url, title, area) {
+    if (!url) return buildFallback(title, area);
+    return `https://image.thum.io/get/width/1400/crop/900/noanimate/${encodeURI(url)}`;
+  }
+
+  function areaList() {
+    return ['All', ...Array.from(new Set(modules.map(m => m.area))).sort(), 'Simulation', 'Assessment'];
+  }
+
+  function moduleDescription(item) {
+    const base = descriptions[item.area] || 'Interactive clinical education content from the Real World CE launch library.';
+    return `${base} This ${item.kind.toLowerCase()} opens directly in a new tab from the Real World CE watch portal.`;
+  }
+
+  function renderChips() {
+    chips.innerHTML = areaList().map(area => `
+      <button class="category-chip ${activeCategory === area ? 'active' : ''}" data-category="${area}">
+        ${area}
+      </button>
+    `).join('');
+
+    chips.querySelectorAll('[data-category]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.category;
+        renderChips();
+        renderModules();
+      });
     });
+  }
 
-    const searchInput = document.getElementById('searchInput');
-    const cards = Array.from(document.querySelectorAll('#moduleGrid .module-card'));
-    const chips = Array.from(document.querySelectorAll('.chip'));
-    let activeFilter = 'all';
+  function renderSideCollections() {
+    const side = document.getElementById('sideCollections');
+    const areas = Array.from(new Set(modules.map(m => m.area))).sort();
+    side.innerHTML = areas.map(area => `
+      <button class="rail-link w-full text-left !py-2 !px-2" data-side-category="${area}">
+        <span class="material-symbols-outlined text-[20px]">playlist_play</span>
+        <span class="truncate">${area}</span>
+      </button>
+    `).join('');
 
-    function matchesFilter(card, filter) {
-      if (filter === 'all') return true;
-      const owner = card.dataset.owner || '';
-      const kind = card.dataset.kind || '';
-      return owner.includes(filter) || kind.includes(filter);
-    }
-
-    function applyFilters() {
-      const term = (searchInput.value || '').toLowerCase().trim();
-      cards.forEach(card => {
-        const haystack = [
-          card.dataset.title || '',
-          card.dataset.owner || '',
-          card.dataset.kind || '',
-          card.dataset.area || '',
-          card.textContent.toLowerCase()
-        ].join(' ');
-        const show = matchesFilter(card, activeFilter) && haystack.includes(term);
-        card.style.display = show ? '' : 'none';
-      });
-    }
-
-    if (searchInput) {
-      searchInput.addEventListener('input', applyFilters);
-    }
-
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('active', 'text-white'));
-        chips.forEach(c => {
-          if (!c.classList.contains('active')) {
-            c.classList.add('text-slate-600');
-          }
-        });
-        chip.classList.add('active');
-        chip.classList.remove('text-slate-600');
-        activeFilter = chip.dataset.filter || 'all';
-        applyFilters();
+    side.querySelectorAll('[data-side-category]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.dataset.sideCategory;
+        renderChips();
+        renderModules();
+        document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
       });
     });
+  }
 
-    function storageKey(viewKey) {
-      return `rwce_views::${viewKey}`;
-    }
+  function filteredModules() {
+    return modules.filter(item => {
+      const matchesCategory =
+        activeCategory === 'All' ||
+        item.area === activeCategory ||
+        item.kind === activeCategory;
 
-    function readViewCount(viewKey) {
-      const raw = localStorage.getItem(storageKey(viewKey));
-      const parsed = parseInt(raw || '0', 10);
-      return Number.isNaN(parsed) ? 0 : parsed;
-    }
+      const haystack = `${item.name} ${item.area} ${item.kind} ${item.owner}`.toLowerCase();
+      const matchesSearch = haystack.includes(searchTerm.toLowerCase());
 
-    function writeViewCount(viewKey, nextValue) {
-      localStorage.setItem(storageKey(viewKey), String(nextValue));
-    }
+      return matchesCategory && matchesSearch;
+    });
+  }
 
-    function refreshViewDisplays() {
-      const trackedLinks = Array.from(document.querySelectorAll('a.tracked-link[data-view-key]'));
-      const uniqueKeys = [...new Set(trackedLinks.map(link => link.dataset.viewKey))];
+  function renderModules() {
+    const list = filteredModules();
+    resultCount.textContent = list.length;
+    emptyState.classList.toggle('hidden', list.length > 0);
 
-      document.querySelectorAll('.view-count[data-view-key]').forEach(node => {
-        node.textContent = readViewCount(node.dataset.viewKey);
-      });
+    grid.innerHTML = list.map((item, index) => {
+      const globalIndex = modules.findIndex(m => m.href === item.href);
+      const views = getViews(item.href);
+      return `
+        <article class="video-card group" data-index="${globalIndex}">
+          <div class="thumb">
+            <span class="tag-top">${item.kind}</span>
+            <img class="thumbnail-img" loading="lazy" src="${screenshotSrc(item.href, item.name, item.area)}" alt="${item.name} preview" onerror="this.onerror=null;this.src='${buildFallback(item.name, item.area)}';" />
+            <div class="play-pill opacity-95 group-hover:scale-105 transition">
+              <span class="material-symbols-outlined text-[34px]">play_arrow</span>
+            </div>
+            <span class="duration">${durations[globalIndex % durations.length]}</span>
+          </div>
 
-      const totalViews = uniqueKeys.reduce((sum, key) => sum + readViewCount(key), 0);
-      const totalNode = document.getElementById('totalLaunchCount');
-      if (totalNode) {
-        totalNode.textContent = totalViews;
-      }
-    }
+          <div class="mt-3 flex gap-3">
+            <div class="avatar">${item.area.split(' ').map(w => w[0]).join('').replace('/', '').slice(0,2).toUpperCase() || 'CE'}</div>
+            <div class="min-w-0">
+              <h3 class="font-black leading-snug text-[1rem] text-ink line-clamp-2">${item.name}</h3>
+              <p class="mt-1 text-sm text-slate-500 font-semibold">Real World CE</p>
+              <p class="mt-1 text-xs text-slate-500 font-semibold">${views} views · ${item.area} · ${item.kind}</p>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
 
-    function initializeViewCounts() {
-      const trackedLinks = Array.from(document.querySelectorAll('a.tracked-link[data-view-key]'));
-      trackedLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          const key = link.dataset.viewKey;
-          const nextValue = readViewCount(key) + 1;
-          writeViewCount(key, nextValue);
-          refreshViewDisplays();
-        });
-      });
+    grid.querySelectorAll('.video-card').forEach(card => {
+      card.addEventListener('click', () => openModal(modules[Number(card.dataset.index)]));
+    });
+  }
 
-      refreshViewDisplays();
-    }
-  
+  function updateStats() {
+    document.getElementById('statModules').textContent = modules.length;
+    document.getElementById('statAreas').textContent = new Set(modules.map(m => m.area)).size;
+    document.getElementById('statViews').textContent = totalViews();
+  }
 
-    function buildPreviewFallback(title, area) {
-      const safeTitle = (title || 'Module Preview').replace(/[&<>]/g, '');
-      const safeArea = (area || 'Real World CE').replace(/[&<>]/g, '');
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760">
-          <defs>
-            <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#1f2f46"/>
-              <stop offset="55%" stop-color="#234a75"/>
-              <stop offset="100%" stop-color="#6eb5e8"/>
-            </linearGradient>
-            <radialGradient id="glow" cx="78%" cy="18%" r="62%">
-              <stop offset="0%" stop-color="rgba(255,255,255,.65)"/>
-              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-            </radialGradient>
-          </defs>
-          <rect width="1200" height="760" rx="34" fill="url(#bg)"/>
-          <circle cx="980" cy="120" r="240" fill="url(#glow)"/>
-          <circle cx="180" cy="620" r="220" fill="rgba(255,255,255,.06)"/>
-          <rect x="76" y="80" width="230" height="34" rx="17" fill="rgba(255,255,255,.14)"/>
-          <rect x="76" y="148" width="1048" height="430" rx="24" fill="rgba(255,255,255,.09)" stroke="rgba(255,255,255,.18)"/>
-          <rect x="112" y="184" width="380" height="18" rx="9" fill="rgba(255,255,255,.18)"/>
-          <rect x="112" y="226" width="540" height="18" rx="9" fill="rgba(255,255,255,.12)"/>
-          <rect x="112" y="288" width="200" height="160" rx="18" fill="rgba(255,255,255,.12)"/>
-          <rect x="334" y="288" width="200" height="160" rx="18" fill="rgba(255,255,255,.10)"/>
-          <rect x="556" y="288" width="200" height="160" rx="18" fill="rgba(255,255,255,.08)"/>
-          <rect x="778" y="288" width="310" height="220" rx="18" fill="rgba(255,255,255,.12)"/>
-          <text x="78" y="630" fill="#ffffff" font-size="26" font-family="Inter, Arial, sans-serif" font-weight="800" letter-spacing="4">${safeArea.toUpperCase()}</text>
-          <text x="78" y="684" fill="#ffffff" font-size="56" font-family="Inter, Arial, sans-serif" font-weight="900">${safeTitle}</text>
-          <text x="78" y="728" fill="rgba(255,255,255,.82)" font-size="22" font-family="Inter, Arial, sans-serif" font-weight="700">Real World CE module preview</text>
-        </svg>`;
-      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-    }
+  function setFeatured() {
+    const featured = modules.find(m => m.name.toLowerCase().includes('tardive')) || modules[0];
+    document.getElementById('featuredTitle').textContent = featured.name;
+    document.getElementById('featuredMeta').textContent = `${featured.owner} · ${featured.area} · ${featured.kind}`;
+    const img = document.getElementById('featuredImage');
+    img.src = screenshotSrc(featured.href, featured.name, featured.area);
+    img.onerror = () => {
+      img.onerror = null;
+      img.src = buildFallback(featured.name, featured.area);
+    };
 
-    function initializeModulePreviews() {
-      const previewNodes = Array.from(document.querySelectorAll('.module-preview[data-preview-target]'));
-      previewNodes.forEach(node => {
-        const img = node.querySelector('.module-preview-image');
-        if (!img) return;
+    document.getElementById('featuredThumb').addEventListener('click', () => openModal(featured));
+    document.getElementById('openFeatured').addEventListener('click', () => openModal(featured));
+  }
 
-        const target = node.dataset.previewTarget || '';
-        const title = node.dataset.previewTitle || 'Module Preview';
-        const area = node.dataset.previewArea || 'Real World CE';
-        const fallback = buildPreviewFallback(title, area);
-        const screenshotSrc = target
-          ? `https://image.thum.io/get/width/1400/crop/900/noanimate/${encodeURI(target)}`
-          : fallback;
+  function openModal(item) {
+    incrementViews(item.href);
 
-        img.src = screenshotSrc;
-        img.addEventListener('error', () => {
-          img.src = fallback;
-        }, { once: true });
-      });
-    }
+    document.getElementById('modalTitle').textContent = item.name;
+    document.getElementById('modalMeta').textContent = `${item.owner} · ${item.area} · ${item.kind} · ${getViews(item.href)} views`;
+    document.getElementById('modalDescription').textContent = moduleDescription(item);
+
+    const modalImg = document.getElementById('modalImage');
+    modalImg.src = screenshotSrc(item.href, item.name, item.area);
+    modalImg.onerror = () => {
+      modalImg.onerror = null;
+      modalImg.src = buildFallback(item.name, item.area);
+    };
+
+    const link = document.getElementById('modalOpenLink');
+    link.href = item.href;
+    link.dataset.viewKey = item.href;
+
+    document.getElementById('watchModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    renderModules();
+  }
+
+  function closeModal() {
+    document.getElementById('watchModal').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  searchInput.addEventListener('input', (event) => {
+    searchTerm = event.target.value.trim();
+    renderModules();
+  });
+
+  document.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeModal));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeModal();
+  });
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('.tracked-link');
+    if (!link || !link.dataset.viewKey) return;
+    incrementViews(link.dataset.viewKey);
+  });
+
+  renderChips();
+  renderSideCollections();
+  renderModules();
+  setFeatured();
+  updateStats();
 </script>
 </body>
 </html>
