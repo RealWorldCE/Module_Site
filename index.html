@@ -2140,6 +2140,144 @@
       }
     }
 
+
+    /* Module Command Center: place category bubbles under the heading */
+    #library .glass > .flex.flex-col.gap-4 {
+      align-items: stretch !important;
+    }
+
+    #library .filter-chip-row {
+      width: 100% !important;
+      margin-top: .15rem !important;
+    }
+
+
+    /* Mockup-style Module Command Center layout */
+    #library .command-center-card {
+      border-radius: 1.55rem !important;
+      padding: 1.35rem 1.55rem 1.55rem !important;
+    }
+
+    #library .command-center-top {
+      display: grid !important;
+      grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr) !important;
+      gap: 1.5rem !important;
+      align-items: start !important;
+    }
+
+    #library .command-center-copy h2 {
+      line-height: 1.06 !important;
+      letter-spacing: -.055em !important;
+    }
+
+    #library .command-center-copy p {
+      max-width: 18rem !important;
+      line-height: 1.45 !important;
+      font-weight: 500 !important;
+    }
+
+    #library .command-center-chip-row {
+      width: 100% !important;
+      margin-top: .2rem !important;
+      overflow: visible !important;
+      padding-bottom: 0 !important;
+    }
+
+    #library .command-center-chip-row > div {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: .55rem !important;
+      width: 100% !important;
+    }
+
+    #library .command-center-chip-row .chip {
+      flex: 0 0 auto !important;
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      min-height: 2.45rem !important;
+      padding: .55rem .95rem !important;
+      border-radius: 999px !important;
+      white-space: nowrap !important;
+      text-align: center !important;
+      line-height: 1 !important;
+      font-size: .84rem !important;
+      font-weight: 850 !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+    }
+
+    #library .command-center-chip-row .chip.active {
+      box-shadow: 0 14px 32px rgba(37,99,235,.24) !important;
+    }
+
+    #library .command-center-search-row {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) 13.5rem !important;
+      gap: .75rem !important;
+      align-items: center !important;
+    }
+
+    #library .command-center-search,
+    #library .command-center-select {
+      min-width: 0 !important;
+      box-shadow: 0 12px 26px rgba(15,23,42,.04) !important;
+    }
+
+    #library .command-center-select {
+      appearance: auto !important;
+      cursor: pointer !important;
+    }
+
+    @media (max-width: 980px) {
+      #library .command-center-top {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+      }
+
+      #library .command-center-copy p {
+        max-width: 100% !important;
+      }
+
+      #library .command-center-chip-row > div {
+        justify-content: flex-start !important;
+      }
+    }
+
+    @media (max-width: 700px) {
+      #library .command-center-card {
+        padding: 1rem !important;
+      }
+
+      #library .command-center-search-row {
+        grid-template-columns: 1fr !important;
+      }
+
+      #library .command-center-select {
+        width: 100% !important;
+      }
+
+      #library .command-center-chip-row {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding-bottom: .3rem !important;
+      }
+
+      #library .command-center-chip-row > div {
+        flex-wrap: nowrap !important;
+        width: max-content !important;
+        min-width: 100% !important;
+      }
+
+      #library .command-center-chip-row .chip {
+        min-height: 2.4rem !important;
+        padding: .52rem .85rem !important;
+        font-size: .78rem !important;
+      }
+    }
+
 </style>
 </head>
 <body class="text-slate-800 min-h-screen">
@@ -2280,23 +2418,29 @@
 <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
 <section class="grid xl:grid-cols-[1.3fr_.7fr] gap-6 sm:gap-8">
 <div class="space-y-6" id="library">
-<div class="glass rounded-3xl p-5 sm:p-6 shadow-soft">
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-<div>
+<div class="glass rounded-3xl p-5 sm:p-6 shadow-soft command-center-card">
+<div class="command-center-top">
+<div class="command-center-copy">
 <div class="text-xs font-black uppercase tracking-[0.18em] text-blue-700">Module Library</div>
-<h2 class="text-2xl sm:text-3xl font-black tracking-tight text-medicalBlue mt-1">Module command center</h2>
-<p class="text-slate-500 mt-1">Search, launch, and track every live clinical module from the command center.</p>
+<h2 class="text-2xl sm:text-3xl font-black tracking-tight text-medicalBlue mt-1">Module command<br class="hidden lg:block"/> center</h2>
+<p class="text-slate-500 mt-2">Search, launch, and track every live clinical module from the command center.</p>
 </div>
-<div class="filter-chip-row pb-1">
-<div class="flex flex-wrap gap-2"><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold active" data-filter="all">All</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="featured">Featured</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="new">New</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="hematology-oncology">Hematology/Oncology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="neurology">Neurology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="immunology">Immunology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="infectious-disease">Infectious Disease</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="gastroenterology">Gastroenterology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="rheumatology">Rheumatology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="dermatology">Dermatology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="urology">Urology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="psychiatry">Psychiatry</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="rare-disease">Rare Disease</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="simulations">Simulations</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="patients">Patients</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="data">Data</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="assessments">Assessments</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="cases">Cases</button></div>
+<div class="filter-chip-row pb-1 command-center-chip-row command-center-chip-row">
+<div class="flex flex-wrap gap-2"><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold active" data-filter="all">All</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="featured">Featured</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="new">New</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="hematology-oncology">Hematology/Oncology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="neurology">Neurology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="immunology">Immunology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="infectious-disease">Infectious Disease</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="gastroenterology">Gastroenterology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="rheumatology">Rheumatology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="dermatology">Dermatology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="urology">Urology</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="psychiatry">Psychiatry</button><button class="chip inline-flex items-center justify-center px-3.5 py-2 rounded-full border border-slate-200 text-sm font-bold text-slate-600" data-filter="rare-disease">Rare Disease</button></div>
 </div>
 </div>
-<div class="mt-5 grid md:grid-cols-[1fr_auto] gap-3">
-<label class="relative block">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<div class="command-center-search-row mt-5">
+<label class="relative block command-center-search">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">search</span>
 <input class="w-full h-12 rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm font-medium outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50" id="searchInput" placeholder="Search by module, specialty, topic, or format..." type="text"/>
 </label>
-<div class="h-12 w-full md:w-auto rounded-2xl bg-medicalBlue text-white px-4 md:px-5 text-sm font-bold inline-flex items-center justify-center whitespace-nowrap">14 learning experiences</div>
+<select aria-label="Module view filter" class="command-center-select h-12 rounded-2xl border border-slate-200 bg-white px-5 text-sm font-black text-medicalBlue outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-50">
+<option>All Modules</option>
+<option>Featured</option>
+<option>New</option>
+<option>Clinical Areas</option>
+<option>Learning Formats</option>
+</select>
 </div>
 </div>
 <div class="grid sm:grid-cols-2 gap-5" id="moduleGrid">
