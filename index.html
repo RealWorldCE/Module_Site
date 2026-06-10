@@ -6,7 +6,6 @@
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Real World CE | Module Portal</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
@@ -428,7 +427,7 @@
     }
 
     header .font-black.tracking-tight.text-lg,
-    #secureLogin .text-white.text-3xl,
+    #demoLogin .text-white.text-3xl,
     #splash .text-white.text-3xl {
       letter-spacing: -.035em;
     }
@@ -505,7 +504,7 @@
       box-shadow: 0 14px 34px rgba(37,99,235,.12);
     }
 
-    #secureLogin {
+    #demoLogin {
       position: relative;
       isolation: isolate;
       background:
@@ -514,7 +513,7 @@
         linear-gradient(135deg, #050b14 0%, #07111d 46%, #10243a 100%) !important;
     }
 
-    #secureLogin::before {
+    #demoLogin::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -527,7 +526,7 @@
       mask-image: radial-gradient(circle at 50% 28%, black 0%, transparent 78%);
     }
 
-    #secureLogin .relative.w-full.max-w-md {
+    #demoLogin .relative.w-full.max-w-md {
       max-width: 31rem;
       background:
         linear-gradient(145deg, rgba(255,255,255,.16), rgba(255,255,255,.07));
@@ -537,7 +536,7 @@
         inset 0 1px 0 rgba(255,255,255,.12);
     }
 
-    #secureLogin .relative.w-full.max-w-md::before {
+    #demoLogin .relative.w-full.max-w-md::before {
       content: "";
       position: absolute;
       inset: -1px;
@@ -548,12 +547,12 @@
       filter: blur(.2px);
     }
 
-    #secureLogin input {
+    #demoLogin input {
       background: rgba(255,255,255,.95) !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 14px 34px rgba(0,0,0,.10);
     }
 
-    #secureLogin button,
+    #demoLogin button,
     a.tracked-link.bg-blue-600,
     .hero-bg a.bg-white,
     .hero-bg a.bg-blue-600,
@@ -714,7 +713,7 @@
     }
 
     @media (max-width: 480px) {
-      #secureLogin .relative.w-full.max-w-md {
+      #demoLogin .relative.w-full.max-w-md {
         border-radius: 1.5rem;
         padding: 1.25rem;
       }
@@ -1361,7 +1360,7 @@
       font-size: 16px !important;
     }
 
-    #secureLogin {
+    #demoLogin {
       min-height: 100svh;
       padding: max(1rem, env(safe-area-inset-top)) var(--mobile-gutter) max(1rem, env(safe-area-inset-bottom));
     }
@@ -1738,12 +1737,12 @@
         flex-basis: 100%;
       }
 
-      #secureLogin .relative.w-full.max-w-md {
+      #demoLogin .relative.w-full.max-w-md {
         padding: 1rem !important;
         border-radius: 1.2rem !important;
       }
 
-      #secureLogin .text-white.text-3xl,
+      #demoLogin .text-white.text-3xl,
       #splash .text-white.text-3xl {
         font-size: 1.8rem !important;
       }
@@ -2291,7 +2290,7 @@
 </div>
 </div>
 </div>
-<section class="min-h-screen flex items-center justify-center bg-[#07111d] px-4 py-10" id="secureLogin">
+<section class="min-h-screen flex items-center justify-center bg-[#07111d] px-4 py-10" id="demoLogin">
 <div class="absolute inset-0 overflow-hidden pointer-events-none">
 <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl"></div>
 <div class="absolute top-24 right-0 h-80 w-80 rounded-full bg-skyBrand/20 blur-3xl"></div>
@@ -2304,19 +2303,19 @@
 <div class="mt-2 text-blue-100/75 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em]">Module Portal</div>
 <div class="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-blue-100/80">
 <span class="material-symbols-outlined text-[16px]">verified_user</span>
-        Secure Access
+        Demo Access
       </div>
 </div>
-<form autocomplete="off" class="space-y-4" id="secureLoginForm">
+<form autocomplete="off" class="space-y-4" id="demoLoginForm">
 <label class="block">
-<span class="mb-2 block text-xs font-black uppercase tracking-[0.18em] text-blue-100/80">Email</span>
-<input autocomplete="username" class="h-12 w-full rounded-2xl border border-white/15 bg-white/95 px-4 text-base font-bold text-medicalBlue outline-none focus:border-skyBrand focus:ring-4 focus:ring-skyBrand/20" id="loginEmail" placeholder="Email address" type="email"/>
+<span class="mb-2 block text-xs font-black uppercase tracking-[0.18em] text-blue-100/80">Username</span>
+<input autocomplete="username" class="h-12 w-full rounded-2xl border border-white/15 bg-white/95 px-4 text-base font-bold text-medicalBlue outline-none focus:border-skyBrand focus:ring-4 focus:ring-skyBrand/20" id="demoUsername" placeholder="Username" type="text"/>
 </label>
 <label class="block">
 <span class="mb-2 block text-xs font-black uppercase tracking-[0.18em] text-blue-100/80">Password</span>
-<input autocomplete="current-password" class="h-12 w-full rounded-2xl border border-white/15 bg-white/95 px-4 text-base font-bold text-medicalBlue outline-none focus:border-skyBrand focus:ring-4 focus:ring-skyBrand/20" id="loginPassword" placeholder="Password" type="password"/>
+<input autocomplete="current-password" class="h-12 w-full rounded-2xl border border-white/15 bg-white/95 px-4 text-base font-bold text-medicalBlue outline-none focus:border-skyBrand focus:ring-4 focus:ring-skyBrand/20" id="demoPassword" placeholder="Password" type="password"/>
 </label>
-<div class="hidden rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700" id="loginError">Invalid email or password. Please try again.</div>
+<div class="hidden rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700" id="demoLoginError">Please enter Demo for both username and password.</div>
 <button class="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 font-black text-white shadow-glow transition hover:bg-blue-700" type="submit">
 <span class="material-symbols-outlined text-[20px]">login</span>
         Enter Portal
@@ -2340,7 +2339,7 @@
 <div class="header-account-actions">
 <div aria-label="Logged in user and viewed modules" class="user-status-badge">
 <span aria-hidden="true" class="material-symbols-outlined">account_circle</span>
-<span>Logged in: <span id="loggedInUser">User</span></span>
+<span>Logged in: <span id="loggedInUser">Demo</span></span>
 <span aria-hidden="true" class="user-divider"></span>
 <span><span id="userViewedModuleCount">0</span> modules viewed</span>
 </div>
@@ -2744,36 +2743,7 @@
   </div>
 </section>
 <script>
-
-    // ================================
-    // SUPABASE DATABASE CONNECTION
-    // Supabase database connection and secure email/password authentication.
-    // ================================
-    const RWCE_SUPABASE_URL = 'https://mfcvunvlmacwxoguznoh.supabase.co';
-    const RWCE_SUPABASE_ANON_KEY = 'sb_publishable_zoW-NAwVPqKBz2vQco7G4g_hAUBeUrW';
-    const RWCE_MODULE_BUCKET = 'learning-modules';
-    let rwceSupabase = null;
-    let rwceSupabaseReady = false;
-
-    function isSupabaseConfigured() {
-      return RWCE_SUPABASE_URL.startsWith('https://') &&
-        RWCE_SUPABASE_ANON_KEY.length > 40 &&
-        !RWCE_SUPABASE_URL.includes('PASTE_') &&
-        !RWCE_SUPABASE_ANON_KEY.includes('PASTE_');
-    }
-
-    function initSupabase() {
-      if (!isSupabaseConfigured() || !window.supabase) return false;
-      if (!rwceSupabase) {
-        rwceSupabase = window.supabase.createClient(RWCE_SUPABASE_URL, RWCE_SUPABASE_ANON_KEY);
-        window.rwceSupabase = rwceSupabase;
-      }
-      rwceSupabaseReady = true;
-      return true;
-    }
-
     window.addEventListener('load', () => {
-      initSupabase();
       const splash = document.getElementById('splash');
       if (splash) {
         setTimeout(() => {
@@ -2784,7 +2754,7 @@
         }, 850);
       }
 
-      initializeSecureLogin();
+      initializeDemoLogin();
       initializeViewCounts();
       initializeModuleViewer();
       initializeLogout();
@@ -2876,7 +2846,7 @@
     }
 
     function activeUserName() {
-      return localStorage.getItem('rwce_active_user') || 'User';
+      return localStorage.getItem('rwce_active_user') || 'Demo';
     }
 
     function userViewedModulesKey(username = activeUserName()) {
@@ -3004,110 +2974,35 @@
     }
 
 
-    async function fetchActiveUserProfile(user) {
-      if (!rwceSupabaseReady || !rwceSupabase || !user || !user.email) return null;
-
-      try {
-        const { data, error } = await rwceSupabase
-          .from('profiles')
-          .select('full_name,email,role')
-          .eq('email', user.email)
-          .maybeSingle();
-
-        if (error) {
-          console.warn('Unable to load user profile:', error.message);
-          return null;
-        }
-
-        return data || null;
-      } catch (error) {
-        console.warn('Unable to load user profile:', error);
-        return null;
-      }
-    }
-
-    async function activatePortalForUser(user) {
-      const loginScreen = document.getElementById('secureLogin');
+    function initializeDemoLogin() {
+      const loginScreen = document.getElementById('demoLogin');
       const portalShell = document.getElementById('portalShell');
-      const errorBox = document.getElementById('loginError');
-      const profile = await fetchActiveUserProfile(user);
-      const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email || 'User';
-      const userRole = profile?.role || user?.user_metadata?.role || 'learner';
-
-      localStorage.setItem('rwce_active_user', displayName);
-      localStorage.setItem('rwce_active_user_email', user?.email || '');
-      localStorage.setItem('rwce_active_user_role', userRole);
-
-      if (errorBox) errorBox.classList.add('hidden');
-      refreshUserStatus();
-      if (loginScreen) loginScreen.classList.add('hidden');
-      if (portalShell) portalShell.classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    async function initializeSecureLogin() {
-      const loginScreen = document.getElementById('secureLogin');
-      const portalShell = document.getElementById('portalShell');
-      const form = document.getElementById('secureLoginForm');
-      const usernameInput = document.getElementById('loginEmail');
-      const passwordInput = document.getElementById('loginPassword');
-      const errorBox = document.getElementById('loginError');
+      const form = document.getElementById('demoLoginForm');
+      const usernameInput = document.getElementById('demoUsername');
+      const passwordInput = document.getElementById('demoPassword');
+      const errorBox = document.getElementById('demoLoginError');
 
       if (!loginScreen || !portalShell || !form || !usernameInput || !passwordInput) return;
 
-      if (!rwceSupabaseReady || !rwceSupabase) {
-        if (errorBox) {
-          errorBox.textContent = 'Secure login is not configured. Please contact the administrator.';
-          errorBox.classList.remove('hidden');
-        }
-        return;
-      }
-
-      const { data: sessionData } = await rwceSupabase.auth.getSession();
-      if (sessionData?.session?.user) {
-        await activatePortalForUser(sessionData.session.user);
-        return;
-      }
-
       setTimeout(() => usernameInput.focus(), 1000);
 
-      form.addEventListener('submit', async event => {
+      form.addEventListener('submit', event => {
         event.preventDefault();
-        const email = usernameInput.value.trim().toLowerCase();
-        const password = passwordInput.value;
-        const submitButton = form.querySelector('button[type="submit"]');
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        if (!email || !password) {
-          if (errorBox) {
-            errorBox.textContent = 'Enter your email and password to continue.';
-            errorBox.classList.remove('hidden');
-          }
-          return;
-        }
-
-        if (submitButton) {
-          submitButton.disabled = true;
-          submitButton.classList.add('opacity-70', 'cursor-not-allowed');
-        }
-
-        const { data, error } = await rwceSupabase.auth.signInWithPassword({ email, password });
-
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.classList.remove('opacity-70', 'cursor-not-allowed');
-        }
-
-        if (error || !data?.user) {
-          if (errorBox) {
-            errorBox.textContent = 'Invalid email or password. Please try again.';
-            errorBox.classList.remove('hidden');
-          }
+        if (username === 'Demo' && password === 'Demo') {
+          localStorage.setItem('rwce_active_user', username);
+          if (errorBox) errorBox.classList.add('hidden');
+          refreshUserStatus();
+          loginScreen.classList.add('hidden');
+          portalShell.classList.remove('hidden');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          if (errorBox) errorBox.classList.remove('hidden');
           passwordInput.value = '';
           passwordInput.focus();
-          return;
         }
-
-        await activatePortalForUser(data.user);
       });
     }
 
@@ -3116,22 +3011,16 @@
       if (!logoutButtons.length) return;
 
       logoutButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-          const loginScreen = document.getElementById('secureLogin');
+        button.addEventListener('click', () => {
+          const loginScreen = document.getElementById('demoLogin');
           const portalShell = document.getElementById('portalShell');
           const moduleViewer = document.getElementById('moduleViewer');
           const moduleFrame = document.getElementById('moduleFrame');
-          const usernameInput = document.getElementById('loginEmail');
-          const passwordInput = document.getElementById('loginPassword');
-          const errorBox = document.getElementById('loginError');
-
-          if (rwceSupabaseReady && rwceSupabase) {
-            await rwceSupabase.auth.signOut();
-          }
+          const usernameInput = document.getElementById('demoUsername');
+          const passwordInput = document.getElementById('demoPassword');
+          const errorBox = document.getElementById('demoLoginError');
 
           localStorage.removeItem('rwce_active_user');
-          localStorage.removeItem('rwce_active_user_email');
-          localStorage.removeItem('rwce_active_user_role');
 
           if (moduleFrame) moduleFrame.src = 'about:blank';
           if (moduleViewer) moduleViewer.classList.add('hidden');
